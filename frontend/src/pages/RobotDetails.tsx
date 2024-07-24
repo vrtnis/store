@@ -18,6 +18,9 @@ import {
 import Markdown from "react-markdown";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { isFulfilled } from "utils/isfullfiled";
+declare module 'react-helmet';
+import { Helmet } from "react-helmet";
+
 
 interface RobotDetailsResponse {
   name: string;
@@ -174,6 +177,17 @@ const RobotDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{name} - Robot Details</title>
+        <meta property="og:title" content={name} />
+        <meta property="og:description" content={description} />
+        {images && images.length > 0 && (
+          <meta property="og:image" content={images[0].url} />
+        )}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+      </Helmet>
+
       <Breadcrumb>
         <Breadcrumb.Item onClick={() => navigate("/")}>Home</Breadcrumb.Item>
         <Breadcrumb.Item onClick={() => navigate("/robots/1")}>
@@ -199,27 +213,27 @@ const RobotDetails = () => {
             (response.weight && response.weight !== "") ||
             (response.degrees_of_freedom &&
               response.degrees_of_freedom !== "")) && (
-            <>
-              <hr />
-              {response.height !== "" && (
-                <p className="text-muted">
-                  <strong>Height:</strong> {response.height}
-                </p>
-              )}
-              {response.weight !== "" && (
-                <p className="text-muted">
-                  <strong>Weight: </strong>
-                  {response.weight}
-                </p>
-              )}
-              {response.degrees_of_freedom !== "" && (
-                <p className="text-muted">
-                  <strong>Total Degrees of Freedom:</strong>{" "}
-                  {response.degrees_of_freedom}
-                </p>
-              )}
-            </>
-          )}
+              <>
+                <hr />
+                {response.height !== "" && (
+                  <p className="text-muted">
+                    <strong>Height:</strong> {response.height}
+                  </p>
+                )}
+                {response.weight !== "" && (
+                  <p className="text-muted">
+                    <strong>Weight: </strong>
+                    {response.weight}
+                  </p>
+                )}
+                {response.degrees_of_freedom !== "" && (
+                  <p className="text-muted">
+                    <strong>Total Degrees of Freedom:</strong>{" "}
+                    {response.degrees_of_freedom}
+                  </p>
+                )}
+              </>
+            )}
           <hr />
           <Row>
             <Col>
@@ -460,6 +474,7 @@ const RobotDetails = () => {
       </Modal>
     </>
   );
+
 };
 
 export default RobotDetails;
